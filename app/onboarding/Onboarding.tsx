@@ -52,7 +52,7 @@ export default function Onboarding() {
   const next = () => {
     if (currentIndex === 3) {
       console.log("Navigate to main app or home screen");
-      router.replace("/splash");
+      router.replace("/auth/signup");
       return;
     }
     if (currentIndex < slides.length - 1) {
