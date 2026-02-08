@@ -42,10 +42,6 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
         duration: 800,
         easing: Easing.out(Easing.cubic),
       }),
-      withTiming(1, {
-        duration: 200,
-        easing: Easing.inOut(Easing.quad),
-      }),
     );
 
     // Text animation: fade in with slight delay and slide up

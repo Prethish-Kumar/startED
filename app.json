@@ -38,6 +38,15 @@
             "backgroundColor": "#000000"
           }
         }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Garet-Book.otf",
+            "./assets/fonts/Garet-Heavy.otf"
+          ]
+        }
       ]
     ],
     "experiments": {

@@ -1,6 +1,6 @@
-import { Stack } from "expo-router";
-import { SplashScreen as AnimatedSplashScreen } from "./components/SplashScreen";
+import { Slot } from "expo-router";
 import { useState } from "react";
+import { SplashScreen as AnimatedSplashScreen } from "./components/SplashScreen";
 
 export default function RootLayout() {
   const [showSplash, setShowSplash] = useState(true);
@@ -9,10 +9,10 @@ export default function RootLayout() {
     return (
       <AnimatedSplashScreen
         onAnimationComplete={() => setShowSplash(false)}
-        duration={2000}
+        duration={1000}
       />
     );
   }
 
-  return <Stack />;
+  return <Slot />;
 }
