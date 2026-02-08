@@ -1,34 +1,17 @@
 import { Stack } from "expo-router";
-import * as SplashScreen from "expo-splash-screen";
-import { useEffect, useState } from "react";
-
-SplashScreen.preventAutoHideAsync();
+import { SplashScreen as AnimatedSplashScreen } from "./components/SplashScreen";
+import { useState } from "react";
 
 export default function RootLayout() {
-  const [isReady, setIsReady] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
 
-  useEffect(() => {
-    async function doAsyncStuff() {
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setIsReady(true);
-      }
-    }
-
-    doAsyncStuff();
-  }, []);
-
-  useEffect(() => {
-    if (isReady) {
-      SplashScreen.hide();
-    }
-  }, [isReady]);
-
-  if (!isReady) {
-    return null;
+  if (showSplash) {
+    return (
+      <AnimatedSplashScreen
+        onAnimationComplete={() => setShowSplash(false)}
+        duration={2000}
+      />
+    );
   }
 
   return <Stack />;
