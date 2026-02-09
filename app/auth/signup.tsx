@@ -86,7 +86,7 @@ export default function Signup() {
           // Validate and verify using the updated OTP string
           if (otpString === "123456") {
             console.log("OTP verified successfully");
-            router.replace("/");
+            router.replace("/(tabs)/profile");
           } else {
             setOtpError("Invalid OTP. Try 123456");
           }
@@ -113,7 +113,7 @@ export default function Signup() {
     }
     console.log("OTP verified successfully");
     // Navigate to next screen
-    router.replace("/");
+    router.replace("/(tabs)/profile");
   };
 
   const handleResendOTP = () => {

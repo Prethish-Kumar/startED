@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(tree:*)",
-      "Bash(find \"H:\\\\Started\\\\startED-app\" -name \"*.env*\" -o -name \"*.config.*\" -o -name \"babel.config.*\" -o -metro.config.* \")"
+      "Bash(find \"H:\\\\Started\\\\startED-app\" -name \"*.env*\" -o -name \"*.config.*\" -o -name \"babel.config.*\" -o -metro.config.* \")",
+      "Bash(ls:*)"
     ]
   }
 }
