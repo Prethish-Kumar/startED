@@ -10,9 +10,10 @@ import {
   Dimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import Header from "../components/Header";
-import AchievementCard from "../components/AchievementCard";
-import AchievementModal from "../components/AchievementModal";
+import { router } from "expo-router";
+import Header from "../../components/Header";
+import AchievementCard from "../../components/AchievementCard";
+import AchievementModal from "../../components/AchievementModal";
 
 const { width } = Dimensions.get("window");
 
@@ -69,6 +70,36 @@ const ACHIEVEMENTS: Achievement[] = [
   },
 ];
 
+const DREAM_COLLEGES = [
+  {
+    id: "1",
+    name: "Massachusetts Institute of Technology",
+    shortName: "MIT",
+    location: "Cambridge, USA",
+    color: "#FF1F7D",
+    icon: "school" as const,
+    reason: "World's best technology and engineering programs",
+  },
+  {
+    id: "2",
+    name: "Stanford University",
+    shortName: "Stanford",
+    location: "California, USA",
+    color: "#C4F54D",
+    icon: "leaf" as const,
+    reason: "Amazing innovation ecosystem and startup culture",
+  },
+  {
+    id: "3",
+    name: "Indian Institute of Technology",
+    shortName: "IIT Delhi",
+    location: "New Delhi, India",
+    color: "#87CEEB",
+    icon: "bulb" as const,
+    reason: "India's premier engineering institution",
+  },
+];
+
 const POSTS = [
   "https://images.unsplash.com/photo-1587620962725-abab7fe55159?w=400",
   "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400",
@@ -84,7 +115,11 @@ export default function Profile() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Your Profile" icon="settings" />
+      <Header
+        title="Your Profile"
+        icon="settings"
+        onIconPress={() => router.push("/(tabs)/profile/settings")}
+      />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         {/* Profile Header */}
@@ -190,6 +225,66 @@ export default function Profile() {
               </Text>
             </View>
           </View>
+        </View>
+
+        {/* Dream Colleges */}
+        <View style={styles.section}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>My Dream Colleges 🎓</Text>
+            <TouchableOpacity style={styles.addButton}>
+              <Ionicons name="add-circle-outline" size={20} color="#0057FF" />
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.sectionSubtitle}>
+            Top 3 universities I aspire to join
+          </Text>
+
+          {DREAM_COLLEGES.map((college, index) => (
+            <View key={college.id} style={styles.dreamCollegeCard}>
+              <View style={styles.dreamCollegeRank}>
+                <Text style={styles.dreamCollegeRankText}>{index + 1}</Text>
+              </View>
+
+              <View
+                style={[
+                  styles.dreamCollegeIcon,
+                  { backgroundColor: college.color },
+                ]}
+              >
+                <Ionicons name={college.icon} size={28} color="#fff" />
+              </View>
+
+              <View style={styles.dreamCollegeInfo}>
+                <Text style={styles.dreamCollegeName}>{college.shortName}</Text>
+                <Text style={styles.dreamCollegeFullName}>
+                  {college.name}
+                </Text>
+                <View style={styles.dreamCollegeLocationRow}>
+                  <Ionicons name="location" size={14} color="#666" />
+                  <Text style={styles.dreamCollegeLocation}>
+                    {college.location}
+                  </Text>
+                </View>
+                <View style={styles.dreamCollegeReason}>
+                  <Ionicons name="star" size={12} color="#FFD700" />
+                  <Text style={styles.dreamCollegeReasonText}>
+                    {college.reason}
+                  </Text>
+                </View>
+              </View>
+
+              <TouchableOpacity style={styles.dreamCollegeAction}>
+                <Ionicons name="chevron-forward" size={20} color="#999" />
+              </TouchableOpacity>
+            </View>
+          ))}
+
+          <TouchableOpacity style={styles.exploreButton}>
+            <Ionicons name="compass" size={18} color="#0057FF" />
+            <Text style={styles.exploreButtonText}>
+              Explore More Colleges
+            </Text>
+          </TouchableOpacity>
         </View>
 
         {/* Achievements */}
@@ -413,11 +508,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 16,
   },
+  sectionHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 8,
+  },
   sectionTitle: {
     fontSize: 20,
     fontWeight: "bold",
     color: "#000",
     marginBottom: 16,
+  },
+  sectionSubtitle: {
+    fontSize: 14,
+    color: "#666",
+    marginBottom: 16,
+    marginTop: -8,
+  },
+  addButton: {
+    padding: 4,
   },
   aboutText: {
     fontSize: 15,
@@ -470,6 +580,107 @@ const styles = StyleSheet.create({
   educationDuration: {
     fontSize: 13,
     color: "#666",
+  },
+  dreamCollegeCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f9f9f9",
+    borderRadius: 20,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 2,
+    borderColor: "#f0f0f0",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  dreamCollegeRank: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "#0057FF",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 12,
+  },
+  dreamCollegeRankText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  dreamCollegeIcon: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 16,
+  },
+  dreamCollegeInfo: {
+    flex: 1,
+  },
+  dreamCollegeName: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#000",
+    marginBottom: 2,
+  },
+  dreamCollegeFullName: {
+    fontSize: 12,
+    color: "#666",
+    marginBottom: 6,
+  },
+  dreamCollegeLocationRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    marginBottom: 6,
+  },
+  dreamCollegeLocation: {
+    fontSize: 12,
+    color: "#666",
+  },
+  dreamCollegeReason: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 6,
+    backgroundColor: "#fff",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 12,
+    marginTop: 4,
+  },
+  dreamCollegeReasonText: {
+    fontSize: 11,
+    color: "#666",
+    fontStyle: "italic",
+    flex: 1,
+  },
+  dreamCollegeAction: {
+    padding: 8,
+  },
+  exploreButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    backgroundColor: "#f0f7ff",
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: "#0057FF",
+    marginTop: 8,
+  },
+  exploreButtonText: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "#0057FF",
   },
   achievementsScroll: {
     paddingRight: 20,

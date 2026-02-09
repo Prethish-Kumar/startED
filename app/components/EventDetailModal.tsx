@@ -21,6 +21,10 @@ type EventDetailModalProps = {
   color: string;
   month: string;
   day: string;
+  isInterested?: boolean;
+  isRegistered?: boolean;
+  onInterested?: () => void;
+  onRegister?: () => void;
 };
 
 export default function EventDetailModal({
@@ -34,13 +38,21 @@ export default function EventDetailModal({
   color,
   month,
   day,
+  isInterested = false,
+  isRegistered = false,
+  onInterested,
+  onRegister,
 }: EventDetailModalProps) {
-  const [isRegistered, setIsRegistered] = useState(false);
-  const [isInterested, setIsInterested] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successType, setSuccessType] = useState<'register' | 'interested'>('register');
   const confettiRef = useRef<any>(null);
 
   const handleRegister = () => {
-    setIsRegistered(true);
+    if (onRegister) {
+      onRegister();
+    }
+    setSuccessType('register');
+    setShowSuccess(true);
     // Trigger confetti animation
     confettiRef.current?.start();
     console.log(`Registered for: ${eventName}`);
@@ -48,23 +60,25 @@ export default function EventDetailModal({
     // Auto close after celebration
     setTimeout(() => {
       onClose();
-      // Reset states after modal closes
       setTimeout(() => {
-        setIsRegistered(false);
+        setShowSuccess(false);
       }, 300);
     }, 2500);
   };
 
   const handleInterested = () => {
-    setIsInterested(true);
+    if (onInterested) {
+      onInterested();
+    }
+    setSuccessType('interested');
+    setShowSuccess(true);
     console.log(`Marked interested: ${eventName}`);
 
     // Auto close after a moment
     setTimeout(() => {
       onClose();
-      // Reset states after modal closes
       setTimeout(() => {
-        setIsInterested(false);
+        setShowSuccess(false);
       }, 300);
     }, 1000);
   };
@@ -131,7 +145,7 @@ export default function EventDetailModal({
           </View>
 
           {/* Success Messages */}
-          {isRegistered && (
+          {showSuccess && successType === 'register' && (
             <View style={styles.successMessage}>
               <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
               <Text style={styles.successText}>
@@ -140,7 +154,7 @@ export default function EventDetailModal({
             </View>
           )}
 
-          {isInterested && (
+          {showSuccess && successType === 'interested' && (
             <View style={styles.successMessage}>
               <Ionicons name="heart" size={24} color="#FF3B30" />
               <Text style={styles.successText}>
@@ -148,17 +162,48 @@ export default function EventDetailModal({
               </Text>
             </View>
           )}
+
+          {/* Already Registered/Interested Status */}
+          {isRegistered && !showSuccess && (
+            <View style={[styles.successMessage, { backgroundColor: '#e8f5e9' }]}>
+              <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
+              <Text style={styles.successText}>
+                You're registered for this event! ✅
+              </Text>
+            </View>
+          )}
+
+          {isInterested && !isRegistered && !showSuccess && (
+            <View style={[styles.successMessage, { backgroundColor: '#fff0f5', borderColor: '#FF3B30' }]}>
+              <Ionicons name="heart" size={24} color="#FF3B30" />
+              <Text style={[styles.successText, { color: '#d32f2f' }]}>
+                You're interested in this event! 💖
+              </Text>
+            </View>
+          )}
         </ScrollView>
 
         {/* Action Buttons */}
-        {!isRegistered && !isInterested && (
+        {!isRegistered && !showSuccess && (
           <View style={styles.actionButtons}>
             <TouchableOpacity
-              style={styles.interestedButton}
+              style={[
+                styles.interestedButton,
+                isInterested && styles.interestedButtonActive
+              ]}
               onPress={handleInterested}
             >
-              <Ionicons name="heart-outline" size={20} color="#0057FF" />
-              <Text style={styles.interestedButtonText}>Interested</Text>
+              <Ionicons
+                name={isInterested ? "heart" : "heart-outline"}
+                size={20}
+                color={isInterested ? "#FF3B30" : "#0057FF"}
+              />
+              <Text style={[
+                styles.interestedButtonText,
+                isInterested && styles.interestedButtonTextActive
+              ]}>
+                {isInterested ? "Interested ✓" : "Interested"}
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -321,10 +366,17 @@ const styles = StyleSheet.create({
     borderColor: '#0057FF',
     gap: 8,
   },
+  interestedButtonActive: {
+    backgroundColor: '#fff0f5',
+    borderColor: '#FF3B30',
+  },
   interestedButtonText: {
     color: '#0057FF',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  interestedButtonTextActive: {
+    color: '#FF3B30',
   },
   registerButton: {
     flex: 1,

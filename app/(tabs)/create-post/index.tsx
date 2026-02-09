@@ -14,7 +14,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Header from "../components/Header";
+import { router } from "expo-router";
+import Header from "../../components/Header";
 
 type MediaType = "photo" | "video" | "audio" | null;
 
@@ -137,7 +138,11 @@ export default function CreatePost() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header title="Create Post" icon="notifications" onIconPress={() => {}} />
+      <Header
+        title="Create Post"
+        icon="notifications"
+        onIconPress={() => router.push("/(tabs)/create-post/notifications")}
+      />
 
       <KeyboardAvoidingView
         style={{ flex: 1 }}
