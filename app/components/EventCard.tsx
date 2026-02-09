@@ -15,7 +15,7 @@ type EventCardProps = {
   timings: string;
   description: string;
   color: string;
-  onRegister: () => void;
+  onView: () => void;
 };
 
 export default function EventCard({
@@ -26,7 +26,7 @@ export default function EventCard({
   timings,
   description,
   color,
-  onRegister,
+  onView,
 }: EventCardProps) {
   return (
     <View style={styles.card}>
@@ -43,8 +43,8 @@ export default function EventCard({
         <Text style={styles.description} numberOfLines={2}>
           {description}
         </Text>
-        <TouchableOpacity style={styles.registerButton} onPress={onRegister}>
-          <Text style={styles.registerButtonText}>Register Now</Text>
+        <TouchableOpacity style={styles.viewButton} onPress={onView}>
+          <Text style={styles.viewButtonText}>View</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -108,14 +108,14 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     marginBottom: 10,
   },
-  registerButton: {
+  viewButton: {
     backgroundColor: '#0057FF',
     paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 20,
     alignSelf: 'flex-start',
   },
-  registerButtonText: {
+  viewButtonText: {
     color: '#fff',
     fontSize: 13,
     fontWeight: 'bold',

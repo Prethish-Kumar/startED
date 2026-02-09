@@ -10,6 +10,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import Header from "../components/Header";
 import EventCard from "../components/EventCard";
+import EventDetailModal from "../components/EventDetailModal";
 
 type Event = {
   id: string;
@@ -113,6 +114,7 @@ const EVENTS_DATA: Event[] = [
 export default function Events() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredEvents, setFilteredEvents] = useState(EVENTS_DATA);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);
@@ -129,9 +131,8 @@ export default function Events() {
     }
   };
 
-  const handleRegister = (eventId: string, eventName: string) => {
-    console.log(`Registered for event: ${eventName}`);
-    // Add registration logic here
+  const handleViewEvent = (event: Event) => {
+    setSelectedEvent(event);
   };
 
   return (
@@ -174,7 +175,7 @@ export default function Events() {
                 timings={event.timings}
                 description={event.description}
                 color={event.color}
-                onRegister={() => handleRegister(event.id, event.eventName)}
+                onView={() => handleViewEvent(event)}
               />
             ))
           ) : (
@@ -187,6 +188,22 @@ export default function Events() {
           )}
         </ScrollView>
       </View>
+
+      {/* Event Detail Modal */}
+      {selectedEvent && (
+        <EventDetailModal
+          visible={!!selectedEvent}
+          onClose={() => setSelectedEvent(null)}
+          eventName={selectedEvent.eventName}
+          venue={selectedEvent.venue}
+          date={selectedEvent.date}
+          month={selectedEvent.month}
+          day={selectedEvent.day}
+          timings={selectedEvent.timings}
+          description={selectedEvent.description}
+          color={selectedEvent.color}
+        />
+      )}
     </SafeAreaView>
   );
 }
