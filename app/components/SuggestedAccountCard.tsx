@@ -9,6 +9,7 @@ type SuggestedAccountCardProps = {
   followersCount: string;
   isPopular?: boolean;
   onFollow: () => void;
+  onPress?: () => void;
 };
 
 export default function SuggestedAccountCard({
@@ -18,9 +19,14 @@ export default function SuggestedAccountCard({
   followersCount,
   isPopular = false,
   onFollow,
+  onPress,
 }: SuggestedAccountCardProps) {
   return (
-    <View style={[styles.card, isPopular && styles.popularCard]}>
+    <TouchableOpacity
+      style={[styles.card, isPopular && styles.popularCard]}
+      onPress={onPress}
+      activeOpacity={0.7}
+    >
       {isPopular && (
         <LinearGradient
           colors={['#FFD700', '#FFA500', '#FFD700']}
@@ -69,14 +75,17 @@ export default function SuggestedAccountCard({
         {/* Follow Button */}
         <TouchableOpacity
           style={[styles.followButton, isPopular && styles.popularFollowButton]}
-          onPress={onFollow}
+          onPress={(e) => {
+            e.stopPropagation();
+            onFollow();
+          }}
         >
           <Text style={[styles.followButtonText, isPopular && styles.popularFollowButtonText]}>
             Follow
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

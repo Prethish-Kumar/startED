@@ -9,6 +9,8 @@ export default function FeedLayout() {
     >
       <Stack.Screen name="index" />
       <Stack.Screen name="notifications" />
+      <Stack.Screen name="search" />
+      <Stack.Screen name="profile" />
     </Stack>
   );
 }

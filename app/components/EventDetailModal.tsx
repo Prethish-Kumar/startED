@@ -1,14 +1,14 @@
-import { useRef, useState } from 'react';
+import { Ionicons } from "@expo/vector-icons";
+import { useRef, useState } from "react";
 import {
-  View,
-  Text,
   Modal,
-  StyleSheet,
-  TouchableOpacity,
   ScrollView,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import ConfettiCannon from 'react-native-confetti-cannon';
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import ConfettiCannon from "react-native-confetti-cannon";
 
 type EventDetailModalProps = {
   visible: boolean;
@@ -44,14 +44,16 @@ export default function EventDetailModal({
   onRegister,
 }: EventDetailModalProps) {
   const [showSuccess, setShowSuccess] = useState(false);
-  const [successType, setSuccessType] = useState<'register' | 'interested'>('register');
+  const [successType, setSuccessType] = useState<"register" | "interested">(
+    "register",
+  );
   const confettiRef = useRef<any>(null);
 
   const handleRegister = () => {
     if (onRegister) {
       onRegister();
     }
-    setSuccessType('register');
+    setSuccessType("register");
     setShowSuccess(true);
     // Trigger confetti animation
     confettiRef.current?.start();
@@ -70,7 +72,7 @@ export default function EventDetailModal({
     if (onInterested) {
       onInterested();
     }
-    setSuccessType('interested');
+    setSuccessType("interested");
     setShowSuccess(true);
     console.log(`Marked interested: ${eventName}`);
 
@@ -137,15 +139,13 @@ export default function EventDetailModal({
           <View style={styles.additionalInfo}>
             <Text style={styles.additionalInfoTitle}>What to bring</Text>
             <Text style={styles.additionalInfoText}>
-              • Student ID card{'\n'}
-              • Water bottle{'\n'}
-              • Notebook and pen{'\n'}
-              • Enthusiasm and curiosity!
+              • Student ID card{"\n"}• Water bottle{"\n"}• Notebook and pen
+              {"\n"}• Enthusiasm and curiosity!
             </Text>
           </View>
 
           {/* Success Messages */}
-          {showSuccess && successType === 'register' && (
+          {showSuccess && successType === "register" && (
             <View style={styles.successMessage}>
               <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
               <Text style={styles.successText}>
@@ -154,7 +154,7 @@ export default function EventDetailModal({
             </View>
           )}
 
-          {showSuccess && successType === 'interested' && (
+          {showSuccess && successType === "interested" && (
             <View style={styles.successMessage}>
               <Ionicons name="heart" size={24} color="#FF3B30" />
               <Text style={styles.successText}>
@@ -165,19 +165,26 @@ export default function EventDetailModal({
 
           {/* Already Registered/Interested Status */}
           {isRegistered && !showSuccess && (
-            <View style={[styles.successMessage, { backgroundColor: '#e8f5e9' }]}>
+            <View
+              style={[styles.successMessage, { backgroundColor: "#e8f5e9" }]}
+            >
               <Ionicons name="checkmark-circle" size={24} color="#4CAF50" />
               <Text style={styles.successText}>
-                You're registered for this event! ✅
+                You're registered for this event!
               </Text>
             </View>
           )}
 
           {isInterested && !isRegistered && !showSuccess && (
-            <View style={[styles.successMessage, { backgroundColor: '#fff0f5', borderColor: '#FF3B30' }]}>
+            <View
+              style={[
+                styles.successMessage,
+                { backgroundColor: "#fff0f5", borderColor: "#FF3B30" },
+              ]}
+            >
               <Ionicons name="heart" size={24} color="#FF3B30" />
-              <Text style={[styles.successText, { color: '#d32f2f' }]}>
-                You're interested in this event! 💖
+              <Text style={[styles.successText, { color: "#d32f2f" }]}>
+                You're interested in this event!
               </Text>
             </View>
           )}
@@ -189,7 +196,7 @@ export default function EventDetailModal({
             <TouchableOpacity
               style={[
                 styles.interestedButton,
-                isInterested && styles.interestedButtonActive
+                isInterested && styles.interestedButtonActive,
               ]}
               onPress={handleInterested}
             >
@@ -198,10 +205,12 @@ export default function EventDetailModal({
                 size={20}
                 color={isInterested ? "#FF3B30" : "#0057FF"}
               />
-              <Text style={[
-                styles.interestedButtonText,
-                isInterested && styles.interestedButtonTextActive
-              ]}>
+              <Text
+                style={[
+                  styles.interestedButtonText,
+                  isInterested && styles.interestedButtonTextActive,
+                ]}
+              >
                 {isInterested ? "Interested ✓" : "Interested"}
               </Text>
             </TouchableOpacity>
@@ -231,21 +240,21 @@ export default function EventDetailModal({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: "#E0E0E0",
   },
   headerTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
   },
   closeButton: {
     padding: 4,
@@ -255,45 +264,45 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   dateSection: {
-    alignItems: 'center',
+    alignItems: "center",
     marginVertical: 20,
   },
   dateBadge: {
     width: 100,
     height: 100,
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   dateMonth: {
     fontSize: 20,
-    fontWeight: '600',
-    color: '#0057FF',
-    textTransform: 'uppercase',
+    fontWeight: "600",
+    color: "#0057FF",
+    textTransform: "uppercase",
   },
   dateDay: {
     fontSize: 36,
-    fontWeight: 'bold',
-    color: '#0057FF',
+    fontWeight: "bold",
+    color: "#0057FF",
   },
   eventName: {
     fontSize: 26,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   infoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 12,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
     padding: 12,
     borderRadius: 10,
   },
   infoText: {
     fontSize: 15,
-    color: '#333',
+    color: "#333",
     marginLeft: 12,
     flex: 1,
   },
@@ -303,92 +312,92 @@ const styles = StyleSheet.create({
   },
   descriptionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
     marginBottom: 10,
   },
   descriptionText: {
     fontSize: 15,
-    color: '#666',
+    color: "#666",
     lineHeight: 22,
   },
   additionalInfo: {
-    backgroundColor: '#f9f9f9',
+    backgroundColor: "#f9f9f9",
     padding: 16,
     borderRadius: 12,
     marginBottom: 20,
   },
   additionalInfoTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: "bold",
+    color: "#000",
     marginBottom: 8,
   },
   additionalInfoText: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
     lineHeight: 20,
   },
   successMessage: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f0f9f0',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f0f9f0",
     padding: 16,
     borderRadius: 12,
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: '#4CAF50',
+    borderColor: "#4CAF50",
   },
   successText: {
     fontSize: 15,
-    color: '#2E7D32',
+    color: "#2E7D32",
     marginLeft: 12,
     flex: 1,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   actionButtons: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingHorizontal: 20,
     paddingVertical: 16,
     borderTopWidth: 1,
-    borderTopColor: '#E0E0E0',
+    borderTopColor: "#E0E0E0",
     gap: 12,
   },
   interestedButton: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
     paddingVertical: 14,
     borderRadius: 25,
     borderWidth: 2,
-    borderColor: '#0057FF',
+    borderColor: "#0057FF",
     gap: 8,
   },
   interestedButtonActive: {
-    backgroundColor: '#fff0f5',
-    borderColor: '#FF3B30',
+    backgroundColor: "#fff0f5",
+    borderColor: "#FF3B30",
   },
   interestedButtonText: {
-    color: '#0057FF',
+    color: "#0057FF",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   interestedButtonTextActive: {
-    color: '#FF3B30',
+    color: "#FF3B30",
   },
   registerButton: {
     flex: 1,
-    backgroundColor: '#0057FF',
+    backgroundColor: "#0057FF",
     paddingVertical: 14,
     borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   registerButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

@@ -142,15 +142,21 @@ export default function Profile() {
               <Text style={styles.statLabel}>Posts</Text>
             </View>
             <View style={styles.statDivider} />
-            <View style={styles.statItem}>
+            <TouchableOpacity
+              style={styles.statItem}
+              onPress={() => router.push("/(tabs)/profile/followers")}
+            >
               <Text style={styles.statValue}>1,089</Text>
               <Text style={styles.statLabel}>Followers</Text>
-            </View>
+            </TouchableOpacity>
             <View style={styles.statDivider} />
-            <View style={styles.statItem}>
+            <TouchableOpacity
+              style={styles.statItem}
+              onPress={() => router.push("/(tabs)/profile/following")}
+            >
               <Text style={styles.statValue}>275</Text>
               <Text style={styles.statLabel}>Following</Text>
-            </View>
+            </TouchableOpacity>
           </View>
 
           {/* Edit Profile Button */}

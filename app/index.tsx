@@ -1,29 +1,32 @@
 import { router } from "expo-router";
-import { Pressable, Text, View } from "react-native";
+import { useEffect } from "react";
 
 export default function Index() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+  useEffect(() => {
+    // TODO: Add authentication logic here
+    // Example future implementation:
+    // const checkAuth = async () => {
+    //   const isAuthenticated = await getAuthStatus();
+    //   const isNewUser = await checkIfNewUser();
+    //
+    //   if (isAuthenticated) {
+    //     router.replace("/(tabs)/feed");
+    //   } else if (isNewUser) {
+    //     router.replace("/onboarding/Onboarding");
+    //   } else {
+    //     router.replace("/auth/signup");
+    //   }
+    // };
+    // checkAuth();
 
-      <Pressable
-        onPress={() => router.replace("/onboarding/Onboarding")}
-        style={{
-          marginTop: 20,
-          paddingHorizontal: 16,
-          paddingVertical: 10,
-          backgroundColor: "#000",
-          borderRadius: 6,
-        }}
-      >
-        <Text style={{ color: "#fff" }}>Click me</Text>
-      </Pressable>
-    </View>
-  );
+    // Small delay to ensure layout is mounted before navigation
+    const timer = setTimeout(() => {
+      router.replace("/onboarding/Onboarding");
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Return null - the native splash screen will be visible during this brief moment
+  return null;
 }

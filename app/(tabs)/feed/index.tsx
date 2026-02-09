@@ -1,9 +1,16 @@
-import { useState } from "react";
-import { SafeAreaView, ScrollView, View, Text, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import Header from "../../components/Header";
-import PostCard from "../../components/PostCard";
+import { useState } from "react";
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import CommentModal from "../../components/CommentModal";
+import PostCard from "../../components/PostCard";
 import SuggestedAccountCard from "../../components/SuggestedAccountCard";
 
 type Post = {
@@ -44,8 +51,7 @@ const SAMPLE_POSTS: Post[] = [
     id: "2",
     authorName: "Sarah Johnson",
     authorSchool: "Lincoln High School",
-    content:
-      "Excited to share my science project on renewable energy! ⚡️🌱",
+    content: "Excited to share my science project on renewable energy! ⚡️🌱",
     imageUrl:
       "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=400&h=400&fit=crop",
     likes: 85,
@@ -175,7 +181,7 @@ const SAMPLE_POSTS: Post[] = [
 
 const SUGGESTED_ACCOUNTS_1: SuggestedAccount[] = [
   {
-    id: "s1",
+    id: "mit-ocw",
     name: "MIT OpenCourseWare",
     username: "@mitocw",
     type: "institution",
@@ -183,15 +189,15 @@ const SUGGESTED_ACCOUNTS_1: SuggestedAccount[] = [
     isPopular: true,
   },
   {
-    id: "s2",
-    name: "Coding with Mosh",
-    username: "@codingwithmosh",
+    id: "sarah-johnson",
+    name: "Sarah Johnson",
+    username: "@sarah_codes",
     type: "student",
-    followersCount: "856K",
+    followersCount: "856",
     isPopular: false,
   },
   {
-    id: "s3",
+    id: "nasa-students",
     name: "NASA Students",
     username: "@nasastudents",
     type: "institution",
@@ -199,7 +205,7 @@ const SUGGESTED_ACCOUNTS_1: SuggestedAccount[] = [
     isPopular: true,
   },
   {
-    id: "s4",
+    id: "khan-academy",
     name: "Khan Academy",
     username: "@khanacademy",
     type: "institution",
@@ -252,7 +258,7 @@ export default function Feed() {
 
   const renderSuggestedAccounts = (
     accounts: SuggestedAccount[],
-    title: string
+    title: string,
   ) => (
     <View style={styles.suggestedSection}>
       <View style={styles.suggestedHeader}>
@@ -273,6 +279,7 @@ export default function Feed() {
             followersCount={account.followersCount}
             isPopular={account.isPopular}
             onFollow={() => handleFollow(account.id)}
+            onPress={() => router.push(`/(tabs)/feed/profile?id=${account.id}`)}
           />
         ))}
       </ScrollView>
@@ -281,11 +288,24 @@ export default function Feed() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-      <Header
-        title="StartED"
-        icon="notifications"
-        onIconPress={() => router.push("/(tabs)/feed/notifications")}
-      />
+      {/* Custom Header with Search and Notifications */}
+      <View style={styles.header}>
+        <Text style={styles.logo}>startED</Text>
+        <View style={styles.headerActions}>
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={() => router.push("/(tabs)/feed/search")}
+          >
+            <Ionicons name="search" size={24} color="#000" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={() => router.push("/(tabs)/feed/notifications")}
+          >
+            <Ionicons name="notifications" size={24} color="#000" />
+          </TouchableOpacity>
+        </View>
+      </View>
       <ScrollView style={{ flex: 1 }}>
         {/* First 3 posts */}
         {SAMPLE_POSTS.slice(0, 3).map((post) => (
@@ -327,7 +347,7 @@ export default function Feed() {
         {/* Second Suggested Accounts Section */}
         {renderSuggestedAccounts(
           SUGGESTED_ACCOUNTS_2,
-          "Top Universities & Creators 🌟"
+          "Top Universities & Creators 🌟",
         )}
 
         {/* Remaining posts */}
@@ -376,6 +396,28 @@ export default function Feed() {
 }
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: "#fff",
+    borderBottomWidth: 1,
+    borderBottomColor: "#f0f0f0",
+  },
+  logo: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#0066FF",
+  },
+  headerActions: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  iconButton: {
+    padding: 4,
+  },
   suggestedSection: {
     paddingVertical: 20,
     backgroundColor: "#f9f9f9",
