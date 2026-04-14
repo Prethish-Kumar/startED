@@ -105,8 +105,11 @@ export default function Setup() {
         grade: userType === "student" ? grade : undefined,
         city: userType === "institution" ? city : undefined,
       });
-      // Navigate to suggested accounts
-      router.replace("/auth/suggested-accounts");
+      if (userType === "institution") {
+        router.replace("/auth/paywall");
+      } else {
+        router.replace("/auth/suggested-accounts");
+      }
     }
   };
 
