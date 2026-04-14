@@ -14,6 +14,7 @@ import { router } from "expo-router";
 import Header from "../../components/Header";
 import AchievementCard from "../../components/AchievementCard";
 import AchievementModal from "../../components/AchievementModal";
+import { useStreak } from "../../context/StreakContext";
 
 const { width } = Dimensions.get("window");
 
@@ -112,6 +113,8 @@ const POSTS = [
 export default function Profile() {
   const [selectedAchievement, setSelectedAchievement] =
     useState<Achievement | null>(null);
+  const { entries, currentStreak, longestStreak, monthCompletionCount } =
+    useStreak();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -354,6 +357,68 @@ export default function Profile() {
               <View style={styles.activityInfo}>
                 <Text style={styles.activityValue}>892</Text>
                 <Text style={styles.activityLabel}>Profile Views</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Streak Tracker */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Streak Tracker 🔥</Text>
+          <View style={styles.streakSummaryContainer}>
+            <View style={styles.streakSummaryItem}>
+              <View style={[styles.streakSummaryIcon, { backgroundColor: "#FFB6C1" }]}>
+                <Ionicons name="flame" size={20} color="#FF9500" />
+              </View>
+              <Text style={styles.streakSummaryValue}>{currentStreak}</Text>
+              <Text style={styles.streakSummaryLabel}>Current</Text>
+            </View>
+            <View style={styles.streakSummaryDivider} />
+            <View style={styles.streakSummaryItem}>
+              <View style={[styles.streakSummaryIcon, { backgroundColor: "#C4F54D" }]}>
+                <Ionicons name="trophy" size={20} color="#0057FF" />
+              </View>
+              <Text style={styles.streakSummaryValue}>{longestStreak}</Text>
+              <Text style={styles.streakSummaryLabel}>Longest</Text>
+            </View>
+            <View style={styles.streakSummaryDivider} />
+            <View style={styles.streakSummaryItem}>
+              <View style={[styles.streakSummaryIcon, { backgroundColor: "#87CEEB" }]}>
+                <Ionicons name="calendar" size={20} color="#0057FF" />
+              </View>
+              <Text style={styles.streakSummaryValue}>{monthCompletionCount()}</Text>
+              <Text style={styles.streakSummaryLabel}>This Month</Text>
+            </View>
+          </View>
+          <View style={styles.streakGridContainer}>
+            <Text style={styles.streakGridTitle}>Last 365 Days</Text>
+            <View style={styles.streakGrid365}>
+              {Array.from({ length: 365 }, (_, i) => {
+                const date = new Date();
+                date.setDate(date.getDate() - (364 - i));
+                const dateStr = date.toISOString().split("T")[0];
+                const entry = entries.find((e) => e.date === dateStr);
+                const isToday = dateStr === new Date().toISOString().split("T")[0];
+                return (
+                  <View
+                    key={i}
+                    style={[
+                      styles.streakGridCell365,
+                      entry && styles.streakGridCellActive,
+                      isToday && styles.streakGridCellToday,
+                    ]}
+                  />
+                );
+              })}
+            </View>
+            <View style={styles.streakGridLegend}>
+              <View style={styles.streakGridLegendItem}>
+                <View style={[styles.streakGridLegendDot, styles.streakGridLegendActive]} />
+                <Text style={styles.streakGridLegendText}>Checked in</Text>
+              </View>
+              <View style={styles.streakGridLegendItem}>
+                <View style={[styles.streakGridLegendDot, styles.streakGridLegendToday]} />
+                <Text style={styles.streakGridLegendText}>Today</Text>
               </View>
             </View>
           </View>
@@ -756,5 +821,109 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontWeight: "600",
     color: "#fff",
+  },
+  streakSummaryContainer: {
+    flexDirection: "row",
+    backgroundColor: "#f9f9f9",
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 16,
+  },
+  streakSummaryItem: {
+    flex: 1,
+    alignItems: "center",
+    gap: 4,
+  },
+  streakSummaryIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 4,
+  },
+  streakSummaryValue: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#000",
+  },
+  streakSummaryLabel: {
+    fontSize: 11,
+    color: "#666",
+  },
+  streakSummaryDivider: {
+    width: 1,
+    backgroundColor: "#E0E0E0",
+    marginHorizontal: 8,
+  },
+  streakGridContainer: {
+    backgroundColor: "#f9f9f9",
+    borderRadius: 16,
+    padding: 16,
+  },
+  streakGridTitle: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 12,
+  },
+  streakGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 6,
+  },
+  streakGridCell: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+    backgroundColor: "#E8E8E8",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  streakGridCellActive: {
+    backgroundColor: "#4CAF50",
+  },
+  streakGridCellToday: {
+    borderWidth: 2,
+    borderColor: "#FF9500",
+  },
+  streakGrid365: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 2,
+  },
+  streakGridCell365: {
+    width: 8,
+    height: 8,
+    borderRadius: 2,
+    backgroundColor: "#E8E8E8",
+  },
+  streakGridLegend: {
+    flexDirection: "row",
+    justifyContent: "center",
+    gap: 20,
+    marginTop: 12,
+  },
+  streakGridLegendItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  streakGridLegendDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 4,
+  },
+  streakGridLegendActive: {
+    backgroundColor: "#4CAF50",
+  },
+  streakGridLegendToday: {
+    backgroundColor: "#E8E8E8",
+    borderWidth: 2,
+    borderColor: "#FF9500",
+  },
+  streakGridLegendText: {
+    fontSize: 11,
+    color: "#666",
   },
 });

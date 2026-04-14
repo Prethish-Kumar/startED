@@ -12,6 +12,7 @@ import {
 import CommentModal from "../../components/CommentModal";
 import PostCard from "../../components/PostCard";
 import SuggestedAccountCard from "../../components/SuggestedAccountCard";
+import { useStreak } from "../../context/StreakContext";
 
 type Post = {
   id: string;
@@ -251,6 +252,8 @@ const SUGGESTED_ACCOUNTS_2: SuggestedAccount[] = [
 
 export default function Feed() {
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const { currentStreak, hasCheckedInToday } = useStreak();
+  const checkedInToday = hasCheckedInToday();
 
   const handleFollow = (accountId: string) => {
     console.log("Following account:", accountId);
@@ -307,6 +310,41 @@ export default function Feed() {
         </View>
       </View>
       <ScrollView style={{ flex: 1 }}>
+        {/* Streak CTA Card */}
+        <TouchableOpacity
+          style={styles.streakCard}
+          onPress={() => router.push("/(tabs)/feed/streak-checkin")}
+        >
+          <View style={styles.streakCardLeft}>
+            <View style={styles.streakIconCircle}>
+              <Ionicons name="flame" size={28} color="#FF9500" />
+            </View>
+            <View style={styles.streakInfo}>
+              <Text style={styles.streakTitle}>Daily Streak</Text>
+              <Text style={styles.streakSubtitle}>
+                {checkedInToday
+                  ? "Checked in today!"
+                  : `${currentStreak} day streak - Check in now!`}
+              </Text>
+            </View>
+          </View>
+          <View
+            style={[
+              styles.streakBadge,
+              checkedInToday && styles.streakBadgeDone,
+            ]}
+          >
+            <Text
+              style={[
+                styles.streakBadgeText,
+                checkedInToday && styles.streakBadgeTextDone,
+              ]}
+            >
+              {checkedInToday ? "Done" : "Check In"}
+            </Text>
+          </View>
+        </TouchableOpacity>
+
         {/* First 3 posts */}
         {SAMPLE_POSTS.slice(0, 3).map((post) => (
           <PostCard
@@ -439,5 +477,59 @@ const styles = StyleSheet.create({
   },
   suggestedScroll: {
     paddingHorizontal: 16,
+  },
+  streakCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: "#FFF9E6",
+    marginHorizontal: 16,
+    marginVertical: 12,
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: "#FFD700",
+  },
+  streakCardLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  streakIconCircle: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: "#FFF3CD",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  streakInfo: {
+    gap: 2,
+  },
+  streakTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#000",
+  },
+  streakSubtitle: {
+    fontSize: 13,
+    color: "#666",
+  },
+  streakBadge: {
+    backgroundColor: "#0057FF",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  streakBadgeDone: {
+    backgroundColor: "#4CAF50",
+  },
+  streakBadgeText: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  streakBadgeTextDone: {
+    color: "#fff",
   },
 });

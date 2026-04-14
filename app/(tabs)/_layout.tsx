@@ -1,10 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { StreakProvider } from "../context/StreakContext";
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
   return (
+    <StreakProvider>
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: "#0057FF",
@@ -60,5 +62,6 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
+    </StreakProvider>
   );
 }

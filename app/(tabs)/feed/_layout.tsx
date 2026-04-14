@@ -11,6 +11,7 @@ export default function FeedLayout() {
       <Stack.Screen name="notifications" />
       <Stack.Screen name="search" />
       <Stack.Screen name="profile" />
+      <Stack.Screen name="streak-checkin" />
     </Stack>
   );
 }
