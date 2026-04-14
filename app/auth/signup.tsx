@@ -167,7 +167,7 @@ export default function Signup() {
             }}
           />
           <Image
-            source={require("../../assets/images/onboard1.png")}
+            source={require("../../assets/images/Onboard1.png")}
             style={{ width: 400, height: 400 }}
           />
         </View>

@@ -21,7 +21,7 @@ export default function Onboarding() {
   const slides = [
     {
       id: "1",
-      image: require("../../assets/images/onboard1.png"),
+      image: require("../../assets/images/Onboard1.png"),
       title: "Welcome to starED ",
       text: "The professional network for students. Connect, showcase your achievements, and explore opportunities for growth.",
       backgroundColor: "#0057FF",
