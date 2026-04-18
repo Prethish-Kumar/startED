@@ -47,7 +47,9 @@
             "./assets/fonts/Garet-Heavy.otf"
           ]
         }
-      ]
+      ],
+      "expo-image",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
